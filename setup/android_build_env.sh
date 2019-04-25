@@ -30,23 +30,6 @@ libncurses5-dev libsdl1.2-dev libssl-dev libtool libxml2 libxml2-utils lzma* lzo
 patch pkg-config pngcrush pngquant python python-all-dev re2c schedtool squashfs-tools subversion texinfo \
 unzip w3m xsltproc zip zlib1g-dev "${PACKAGES}"
 
-if [[ ! "$(command -v adb)" == "" ]]; then
-    echo -e "Setting up udev rules for adb!"
-    sudo curl --create-dirs -L -o /etc/udev/rules.d/51-android.rules -O -L https://raw.githubusercontent.com/M0Rf30/android-udev-rules/master/51-android.rules
-    sudo groupdel adbusers
-    sudo curl --create-dirs -L -o /usr/lib/sysusers.d/android-udev.conf -O -L https://raw.githubusercontent.com/M0Rf30/android-udev-rules/master/android-udev.conf
-    if [[ "${LSB_RELEASE}" =~ "Mint 18" || "${LSB_RELEASE}" =~ "Ubuntu 16" ]]; then
-        sudo groupadd adbusers
-    else
-        sudo systemd-sysusers
-    fi
-    sudo usermod -a -G adbusers "$(whoami)"
-    sudo udevadm control --reload-rules
-    sudo service udev restart
-    adb kill-server
-    sudo killall adb
-fi
-
 if [[ "$(command -v make)" ]]; then
     makeversion="$(make -v | head -1 | awk '{print $3}')"
     if [[ "${makeversion}" != "${LATEST_MAKE_VERSION}" ]]; then
