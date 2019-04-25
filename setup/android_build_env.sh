@@ -7,7 +7,7 @@
 # Script to setup an AOSP Build environment on Linux Mint and Ubuntu
 
 LATEST_MAKE_VERSION="4.2.1"
-UBUNTU_14_PACKAGES="binutils-static curl figlet git-core libesd0-dev libwxgtk2.8-dev"
+UBUNTU_14_PACKAGES="binutils-static curl figlet libesd0-dev libwxgtk2.8-dev"
 UBUNTU_16_PACKAGES="libesd0-dev"
 UBUNTU_18_PACKAGES="curl"
 PACKAGES=""
@@ -34,7 +34,7 @@ if [[ "$(command -v make)" ]]; then
     makeversion="$(make -v | head -1 | awk '{print $3}')"
     if [[ "${makeversion}" != "${LATEST_MAKE_VERSION}" ]]; then
         echo "Installing make ${LATEST_MAKE_VERSION} instead of ${makeversion}"
-        bash ./setup/make.sh "${LATEST_MAKE_VERSION}"
+        ./setup/make.sh "${LATEST_MAKE_VERSION}"
     fi
 fi
 
@@ -42,5 +42,5 @@ echo "Installing repo"
 sudo curl --create-dirs -L -o /usr/local/bin/repo -O -L https://raw.githubusercontent.com/akhilnarang/repo/master/repo
 sudo chmod a+x /usr/local/bin/repo
 
-bash ./setup/ccache.sh
-bash ./setup/ninja.sh
+./setup/ccache.sh
+./setup/ninja.sh
